@@ -1,0 +1,20 @@
+[
+  {
+    "order_id": 101,
+    "customer": "Alice",
+    "amount": 250.5,
+    "status": "Delivered"
+  },
+  {
+    "order_id": 102,
+    "customer": "Bob",
+    "amount": 180.75,
+    "status": "Shipped"
+  },
+  {
+    "order_id": 103,
+    "customer": "Charlie",
+    "amount": 90.0,
+    "status": "Pending"
+  }
+]
