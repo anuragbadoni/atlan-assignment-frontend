@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { saveAs } from "file-saver";
 
-//this is the function to convert the result data into CSV format
+// Function to convert the result data into CSV format
 const convertToCSV = (rows) => {
   const header = Object.keys(rows[0]).join(","); // Get column headers
   const body = rows
     .map(
-      (row) => Object.values(row).join(",") // Converting each row to a comma-separated string
+      (row) => Object.values(row).join(",") // Convert each row to a comma-separated string
     )
     .join("\n");
   return `${header}\n${body}`;
@@ -23,6 +23,16 @@ const downloadCSV = (rows) => {
 
 const ResultTable = ({ tab }) => {
   const rows = tab.result || [];
+  const [executionTime, setExecutionTime] = useState(null);
+  const [rowCount, setRowCount] = useState(0);
+
+  useEffect(() => {
+    // Simulate query execution time
+    const startTime = Date.now();
+    setRowCount(rows.length); // Update row count
+    const endTime = Date.now();
+    setExecutionTime(endTime - startTime); // Calculate execution time in ms
+  }, [rows]);
 
   if (!rows.length) {
     return <div>No data to display. Run a query!</div>;
@@ -53,6 +63,13 @@ const ResultTable = ({ tab }) => {
         rowsPerPageOptions={[5, 10, 20]}
         disableSelectionOnClick
       />
+
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="body1">Rows: {rowCount}</Typography>
+        <Typography variant="body1">
+          Execution Time: {executionTime} ms
+        </Typography>
+      </Box>
     </Box>
   );
 };
