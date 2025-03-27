@@ -1,5 +1,5 @@
-import React from "react";
-import { Tabs, Tab, Box, IconButton } from "@mui/material";
+import React, { useState } from "react";
+import { Tabs, Tab, Box, IconButton, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import useEditorStore from "../store/editorStore";
@@ -8,8 +8,16 @@ import ResultTable from "./ResultTable";
 import { v4 as uuidv4 } from "uuid";
 
 const TabManager = () => {
-  const { openTabs, activeTabId, switchTab, closeTab, openNewTab } =
-    useEditorStore();
+  const {
+    openTabs,
+    activeTabId,
+    switchTab,
+    closeTab,
+    openNewTab,
+    addSavedQuery,
+  } = useEditorStore();
+  const [editingTabId, setEditingTabId] = useState(null);
+  const [newTabName, setNewTabName] = useState("");
 
   const handleAddTab = () => {
     const newTab = {
@@ -19,6 +27,21 @@ const TabManager = () => {
       result: [],
     };
     openNewTab(newTab);
+  };
+
+  const handleRenameTab = (tabId) => {
+    const tab = openTabs.find((t) => t.id === tabId);
+    setNewTabName(tab.name);
+    setEditingTabId(tabId);
+  };
+
+  const handleSaveTab = (tabId) => {
+    const updatedTab = openTabs.find((t) => t.id === tabId);
+    updatedTab.name = newTabName;
+    // Save updated tab to savedQueries
+    addSavedQuery(updatedTab);
+    setEditingTabId(null);
+    setNewTabName("");
   };
 
   return (
@@ -34,18 +57,39 @@ const TabManager = () => {
             <Tab
               key={tab.id}
               label={
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {tab.name}
-                  <IconButton
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      closeTab(tab.id);
-                    }}
-                  >
-                    <CloseIcon fontSize="small" />
-                  </IconButton>
-                </Box>
+                editingTabId === tab.id ? (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <TextField
+                      size="small"
+                      value={newTabName}
+                      onChange={(e) => setNewTabName(e.target.value)}
+                      onBlur={() => handleSaveTab(tab.id)}
+                      autoFocus
+                    />
+                  </Box>
+                ) : (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    {tab.name}
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRenameTab(tab.id);
+                      }}
+                    >
+                      ✏️
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        closeTab(tab.id);
+                      }}
+                    >
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                )
               }
               value={tab.id}
             />
