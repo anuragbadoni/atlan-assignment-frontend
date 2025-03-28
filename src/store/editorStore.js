@@ -6,6 +6,15 @@ const useEditorStore = create((set) => ({
   toggleTheme: () =>
     set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
 
+  fullScreen: false,
+  toggleFullScreen: () => set((state) => ({ fullScreen: !state.fullScreen })),
+
+  executionTime: 0,
+  setExecutionTime: (newTime) => set(() => ({ executionTime: newTime })),
+
+  queryLoading: false,
+  setQueryLoading: (loading) => set(() => ({ queryLoading: loading })),
+
   openTabs: [],
   activeTabId: null,
 

@@ -9,6 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import useEditorStore from "../store/editorStore";
 import { v4 as uuidv4 } from "uuid";
+import TablesSchema from "./Tables";
 
 const Sidebar = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -35,9 +36,9 @@ const Sidebar = () => {
     <Drawer
       variant="permanent"
       sx={{
-        width: 250,
+        width: 300,
         [`& .MuiDrawer-paper`]: {
-          width: 250,
+          width: 300,
           top: 64,
           boxSizing: "border-box",
         },
@@ -50,6 +51,7 @@ const Sidebar = () => {
       >
         <Tab label="Saved" />
         <Tab label="History" />
+        <Tab label="Tables" />
       </Tabs>
       <Box p={1}>
         <TextField
@@ -61,22 +63,31 @@ const Sidebar = () => {
           onChange={(e) => setFilter(e.target.value)}
         />
       </Box>
+      {tabIndex === 2 && (
+        <Box>
+          <TablesSchema />
+        </Box>
+      )}
+
       <List dense>
-        {(tabIndex === 0 ? filteredSaved : filteredHistory).map((item, idx) => (
-          <ListItem
-            key={idx}
-            button
-            onClick={() =>
-              handleQueryClick(
-                tabIndex === 0
-                  ? item
-                  : { name: `History ${idx + 1}`, query: item }
-              )
-            }
-          >
-            <ListItemText primary={tabIndex === 0 ? item.name : item} />
-          </ListItem>
-        ))}
+        {tabIndex != 2 &&
+          (tabIndex === 0 ? filteredSaved : filteredHistory).map(
+            (item, idx) => (
+              <ListItem
+                key={idx}
+                button
+                onClick={() =>
+                  handleQueryClick(
+                    tabIndex === 0
+                      ? item
+                      : { name: `History ${idx + 1}`, query: item }
+                  )
+                }
+              >
+                <ListItemText primary={tabIndex === 0 ? item.name : item} />
+              </ListItem>
+            )
+          )}
       </List>
     </Drawer>
   );

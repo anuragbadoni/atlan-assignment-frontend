@@ -3,24 +3,48 @@ import { Box, Button, Stack } from "@mui/material";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { githubLight } from "@uiw/codemirror-theme-github";
+import Papa from "papaparse";
 import useEditorStore from "../store/editorStore";
-import customers from "../data/customers.json"; // Example dummy data
-import orders from "../data/orders.json";
 
 const QueryEditor = ({ tab }) => {
-  const { updateTabQuery, updateTabResult, addToHistory } = useEditorStore();
-
-  const handleRunQuery = () => {
+  const { updateTabQuery, updateTabResult, addToHistory, setQueryLoading } =
+    useEditorStore();
+  const setExecutionTime = useEditorStore((state) => state.setExecutionTime);
+  const handleRunQuery = async () => {
+    setQueryLoading(true);
     let result = [];
-
-    if (tab.query.toLowerCase().includes("from customers")) {
-      result = customers;
-    } else if (tab.query.toLowerCase().includes("from orders")) {
-      result = orders;
+    try {
+      const startTime = performance.now();
+      let tableName;
+      if (tab.query.toLowerCase().includes("from customers")) {
+        tableName = "customers.csv";
+      } else if (tab.query.toLowerCase().includes("from orders")) {
+        tableName = "orders_details.csv";
+      } else tableName = "products.csv";
+      const response = await fetch(tableName);
+      const csvText = await response.text();
+      console.log(response);
+      Papa.parse(csvText, {
+        header: true,
+        complete: (results) => {
+          result = results.data;
+          setQueryLoading(false);
+          updateTabResult(tab.id, result);
+          addToHistory(tab.query);
+          const endTime = performance.now();
+          setExecutionTime(endTime - startTime);
+        },
+        error: (error) => {
+          console.error("Error parsing CSV:", error);
+          setQueryLoading(false);
+          setExecutionTime(0);
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching CSV:", error);
+      setQueryLoading(false);
+      setExecutionTime(0);
     }
-
-    updateTabResult(tab.id, result);
-    addToHistory(tab.query);
   };
 
   // Handle keyboard shortcuts for Ctrl + Enter or Cmd + Enter

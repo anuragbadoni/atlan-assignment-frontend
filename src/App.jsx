@@ -9,7 +9,7 @@ const App = () => {
     <Box sx={{ display: "flex", height: "100vh" }}>
       <AppBarHeader />
       <Sidebar />
-      <Box component="main" sx={{ flexGrow: 1, mt: 8, p: 2 }}>
+      <Box component="main" sx={{ flexGrow: 1, mt: 8, p: 2  }}>
         <TabManager />
       </Box>
     </Box>
