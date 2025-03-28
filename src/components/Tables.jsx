@@ -86,7 +86,7 @@ const TablesSchema = () => {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
-                        marginBottom: 0.5,
+                      marginBottom: 0.5,
                       marginRight: 2,
                     }}
                   />
