@@ -2,7 +2,7 @@ Certainly! Below is the updated **README.md** that includes placeholders for the
 
 ---
 
-```markdown
+````markdown
 # Atlan SQL Editor - Frontend Internship Task 2025
 
 This web-based **SQL Editor** is designed to help users write SQL queries, run them, and view the results in a virtualized table. The app also includes features like saving queries, searching through saved queries, pagination, and CSV export for the query results.
@@ -13,12 +13,11 @@ This web-based **SQL Editor** is designed to help users write SQL queries, run t
 
 ### Homepage
 
-![Homepage Screenshot](./public/screenshots/homepage-screenshot.png)
+## ![Homepage Screenshot](/screenshots/homepage=screenshot.png)
 
 ### Performance Overview
 
-![Performance Screenshot](./public/screenshots/performance-screenshot.png)
----
+## ![Performance Screenshot](/screenshots/performance-screenshot.png)
 
 ## 🛠 Tech Stack
 
@@ -36,27 +35,33 @@ This web-based **SQL Editor** is designed to help users write SQL queries, run t
 ## 🌟 Features
 
 - **SQL Query Editor**:
+
   - Write and execute SQL queries (mock execution).
   - SQL syntax highlighting using **CodeMirror**.
   - Query results are displayed in a **virtualized table** with pagination.
 
 - **Result Table**:
+
   - The result table is virtualized for better performance when displaying large datasets.
   - Includes **pagination** and **export to CSV** functionality.
 
 - **Saved Queries**:
+
   - Save, rename, and load queries.
   - Toggle between multiple queries to view the corresponding results.
 
 - **Debounced Search**:
+
   - Debounced search in the Sidebar to filter saved queries and query history.
 
 - **Performance Optimizations**:
+
   - **Memoization**: Using `useMemo`, `React.memo`, and `useCallback` to optimize re-renders.
   - **Lazy Loading**: Lazy loading of large components for faster initial page load.
   - **Virtualization**: Large tables are rendered efficiently using **MUI X DataGrid** with virtualization.
 
 - **CSV Export**:
+
   - Export the result set of any query to a CSV file for further analysis.
 
 - **Responsive Design**:
@@ -86,6 +91,7 @@ public/
 ├── orders.csv              # Sample orders data in CSV format for query results
 └── products.csv            # Sample products data in CSV format for query results
 ```
+````
 
 ---
 
@@ -94,17 +100,20 @@ public/
 To run the project locally, follow these steps:
 
 1. **Clone the Repository**:
+
    ```bash
    git clone https://github.com/anuragbadoni/atlan-assignment-frontend
    cd atlan-assignment-frontend
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Run the App**:
+
    ```bash
    npm run dev
    ```
@@ -147,40 +156,40 @@ This application is deployed on **Vercel**.
 
 The following NPM modules were used in the project:
 
-| Module                       | Purpose                                           |
-|------------------------------|---------------------------------------------------|
-| **React**                     | Frontend library for building user interfaces    |
-| **Vite**                       | Build tool for fast development and bundling      |
-| **Material UI (MUI)**         | UI component library for React                    |
-| **Zustand**                   | Lightweight state management library              |
-| **CodeMirror**                | Code editor with SQL syntax highlighting          |
-| **PapaParse**                 | CSV parsing library to handle mock database data  |
-| **MUI X DataGrid**            | Virtualized table component for performance       |
-| **React.memo**                | Optimizes rendering by memoizing functional components |
-| **useMemo**                   | Memoization hook to optimize expensive computations |
-| **useCallback**               | Memoization hook for preventing unnecessary re-creations of functions |
-| **lodash.debounce**           | Limits the rate of function calls (for search input) |
-| **React.lazy**                | Code splitting and lazy loading of components     |
-| **file-saver**                | Used for saving query results as CSV files        |
-| **@codemirror/lang-sql**      | SQL language mode for **CodeMirror**              |
-| **@uiw/codemirror-theme-github** | GitHub theme for **CodeMirror**                   |
+| Module                           | Purpose                                                               |
+| -------------------------------- | --------------------------------------------------------------------- |
+| **React**                        | Frontend library for building user interfaces                         |
+| **Vite**                         | Build tool for fast development and bundling                          |
+| **Material UI (MUI)**            | UI component library for React                                        |
+| **Zustand**                      | Lightweight state management library                                  |
+| **CodeMirror**                   | Code editor with SQL syntax highlighting                              |
+| **PapaParse**                    | CSV parsing library to handle mock database data                      |
+| **MUI X DataGrid**               | Virtualized table component for performance                           |
+| **React.memo**                   | Optimizes rendering by memoizing functional components                |
+| **useMemo**                      | Memoization hook to optimize expensive computations                   |
+| **useCallback**                  | Memoization hook for preventing unnecessary re-creations of functions |
+| **lodash.debounce**              | Limits the rate of function calls (for search input)                  |
+| **React.lazy**                   | Code splitting and lazy loading of components                         |
+| **file-saver**                   | Used for saving query results as CSV files                            |
+| **@codemirror/lang-sql**         | SQL language mode for **CodeMirror**                                  |
+| **@uiw/codemirror-theme-github** | GitHub theme for **CodeMirror**                                       |
 
 ---
 
 ## ⚡ **Performance**
 
-| Metric                     | Value                              |
-|----------------------------|------------------------------------|
-| ** Load Time**             | ~.41s                             |
-| **Table Render Speed**     | <50ms for 1000+ rows              |
-| **Search Input Debounce**  | 300ms                              |
-| **Code Split**             | ✅ Lazy-loaded components for faster initial load |
-| **Virtualization**         | ✅ Virtualized table for handling large datasets |
+| Metric                     | Value                                                               |
+| -------------------------- | ------------------------------------------------------------------- |
+| ** Load Time**             | ~.41s                                                               |
+| **Table Render Speed**     | <50ms for 1000+ rows                                                |
+| **Search Input Debounce**  | 300ms                                                               |
+| **Code Split**             | ✅ Lazy-loaded components for faster initial load                   |
+| **Virtualization**         | ✅ Virtualized table for handling large datasets                    |
 | **Memoization**            | ✅ Used `useMemo`, `React.memo`, and `useCallback` for optimization |
-| **Bundle Size**            | Analyzed via `source-map-explorer` |
-| **Lazy Loading**           | ✅ Implemented for large components like Sidebar and TablesSchema |
-| **Pagination Speed**       | Instant page change for up to 1000+ rows |
-| **Client-Side Pagination** | ✅ Efficient with `MUI DataGrid` |
+| **Bundle Size**            | Analyzed via `source-map-explorer`                                  |
+| **Lazy Loading**           | ✅ Implemented for large components like Sidebar and TablesSchema   |
+| **Pagination Speed**       | Instant page change for up to 1000+ rows                            |
+| **Client-Side Pagination** | ✅ Efficient with `MUI DataGrid`                                    |
 
 ---
 
@@ -218,6 +227,7 @@ A **5-7 minute** video explaining the following:
 
 Made with ❤️ for Atlan by **Anurag Badoni**  
 [GitHub](https://github.com/yourusername)
+
 ```
 
 ---
@@ -230,3 +240,4 @@ Made with ❤️ for Atlan by **Anurag Badoni**
 4. **Record the demo video** and **link it** in the README (if you haven’t done that yet).
 
 This README contains everything you need, and with the placeholders for the screenshots (homepage and performance), you can now just replace them with the actual image links when available. Let me know if you need any more adjustments! 😊
+```
