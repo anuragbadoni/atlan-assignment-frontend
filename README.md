@@ -1,7 +1,23 @@
+Certainly! Below is the updated **README.md** that includes placeholders for the two screenshots (one for the homepage and one for showing performance). You can replace the placeholder image URLs with the actual paths to your screenshots.
+
+---
+
+```markdown
 # Atlan SQL Editor - Frontend Internship Task 2025
 
 This web-based **SQL Editor** is designed to help users write SQL queries, run them, and view the results in a virtualized table. The app also includes features like saving queries, searching through saved queries, pagination, and CSV export for the query results.
 
+---
+
+## 🖼 Screenshots
+
+### Homepage
+
+![Homepage Screenshot](./public/screenshots/homepage-screenshot.png)
+
+### Performance Overview
+
+![Performance Screenshot](./public/screenshots/performance-screenshot.png)
 ---
 
 ## 🛠 Tech Stack
@@ -155,7 +171,7 @@ The following NPM modules were used in the project:
 
 | Metric                     | Value                              |
 |----------------------------|------------------------------------|
-| **Initial Load Time**      | ~200ms                             |
+| ** Load Time**             | ~.41s                             |
 | **Table Render Speed**     | <50ms for 1000+ rows              |
 | **Search Input Debounce**  | 300ms                              |
 | **Code Split**             | ✅ Lazy-loaded components for faster initial load |
@@ -213,4 +229,4 @@ Made with ❤️ for Atlan by **[Your Name]**
 3. **Test everything** once again on Vercel.
 4. **Record the demo video** and **link it** in the README (if you haven’t done that yet).
 
-Let me know if you need any further adjustments or if everything is ready for submission! 😄
+This README contains everything you need, and with the placeholders for the screenshots (homepage and performance), you can now just replace them with the actual image links when available. Let me know if you need any more adjustments! 😊
