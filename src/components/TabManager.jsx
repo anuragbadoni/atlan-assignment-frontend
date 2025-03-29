@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, lazy, Suspense } from "react";
-import { Tabs, Tab, Box, IconButton, TextField } from "@mui/material";
+import { Tabs, Tab, Box, IconButton, TextField, Icon } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import useEditorStore from "../store/editorStore";
@@ -68,18 +68,18 @@ const TabManager = () => {
                 />
               </Box>
             ) : (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 , border: "1px solid #ccc", padding: "4px", borderRadius: "4px" , p:1 ,backgroundColor: "#f5f5f5"}}>
                 {tab.name}
-                <IconButton
+                <Icon
                   size="small"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleRenameTab(tab.id);
                   }}
                 >
-                  ✏️
-                </IconButton>
-                <IconButton
+                  {" ✏️ "}
+                </Icon>
+                <Icon
                   size="small"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -87,7 +87,7 @@ const TabManager = () => {
                   }}
                 >
                   <CloseIcon fontSize="small" />
-                </IconButton>
+                </Icon>
               </Box>
             )
           }

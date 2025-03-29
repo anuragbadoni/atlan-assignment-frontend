@@ -99,7 +99,6 @@ const Sidebar = () => {
             (item, idx) => (
               <ListItem
                 key={idx}
-                button
                 onClick={() =>
                   handleQueryClick(
                     tabIndex === 0

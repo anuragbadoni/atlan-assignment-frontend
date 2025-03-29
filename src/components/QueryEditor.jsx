@@ -23,7 +23,7 @@ const QueryEditor = ({ tab }) => {
       if (lowerQuery.includes("from customers")) {
         tableName = "customers.csv";
       } else if (lowerQuery.includes("from orders")) {
-        tableName = "orders_details.csv";
+        tableName = "order_details.csv";
       } else {
         tableName = "products.csv";
       }
