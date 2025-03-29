@@ -11,7 +11,8 @@ This web-based **SQL Editor** is designed to help users write SQL queries, run t
 
 ### Homepage
 
-## ![Homepage Screenshot]
+## ![Homepage Screenshot]<img width="1432" alt="Screenshot 2025-03-30 at 2 08 07 AM" src="https://github.com/user-attachments/assets/dd6afebc-0c32-4603-b9f5-ff74df0fb14b" />
+
 <img width="1432" alt="Screenshot 2025-03-30 at 2 08 07 AM" src="https://github.com/user-attachments/assets/acef6d8f-78cd-4b5e-9ba0-fad16ee858c9" />
 
 
@@ -33,7 +34,8 @@ This web-based **SQL Editor** is designed to help users write SQL queries, run t
 
 ---
 
-## 🌟 Features
+## 🌟 Features<img width="1426" alt="Screenshot 2025-03-30 at 2 07 39 AM" src="https://github.com/user-attachments/assets/ea11ffd6-07fe-4b82-8588-85a5d68babf2" />
+
 
 - **SQL Query Editor**:
 
