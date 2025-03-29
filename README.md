@@ -1,6 +1,4 @@
-Certainly! Below is the updated **README.md** that includes placeholders for the two screenshots (one for the homepage and one for showing performance). You can replace the placeholder image URLs with the actual paths to your screenshots.
 
----
 
 ````markdown
 # Atlan SQL Editor - Frontend Internship Task 2025
@@ -13,11 +11,14 @@ This web-based **SQL Editor** is designed to help users write SQL queries, run t
 
 ### Homepage
 
-## ![Homepage Screenshot](/screenshots/homepage=screenshot.png)
+## ![Homepage Screenshot]
+<img width="1432" alt="Screenshot 2025-03-30 at 2 08 07 AM" src="https://github.com/user-attachments/assets/acef6d8f-78cd-4b5e-9ba0-fad16ee858c9" />
+
 
 ### Performance Overview
 
-## ![Performance Screenshot](/screenshots/performance-screenshot.png)
+## ![Performance Screenshot]
+<img width="1426" alt="Screenshot 2025-03-30 at 2 07 39 AM" src="https://github.com/user-attachments/assets/c213f9ae-c1cb-4515-9a79-d91403389055" />
 
 ## 🛠 Tech Stack
 
