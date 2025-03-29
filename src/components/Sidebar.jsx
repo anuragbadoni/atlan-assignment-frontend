@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import debounce from "lodash/debounce";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -9,11 +10,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import useEditorStore from "../store/editorStore";
 import { v4 as uuidv4 } from "uuid";
-import TablesSchema from "./Tables";
+import { Suspense, lazy } from "react";
+
+const TablesSchema = lazy(() => import("./Tables")); // for Lazy load
 
 const Sidebar = () => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [filter, setFilter] = useState("");
+  const [rawFilter, setRawFilter] = useState(""); // for the actual input box
+  const [filter, setFilter] = useState("");      // debounced state
+
   const { savedQueries, queryHistory, openNewTab } = useEditorStore();
 
   const handleQueryClick = (queryObj) => {
@@ -25,12 +30,31 @@ const Sidebar = () => {
     });
   };
 
-  const filteredSaved = savedQueries.filter((q) =>
-    q.name.toLowerCase().includes(filter.toLowerCase())
-  );
-  const filteredHistory = queryHistory.filter((q) =>
-    q.toLowerCase().includes(filter.toLowerCase())
-  );
+  // Debounce filter input for 300ms to avoid excessive re-renders
+  const debouncedFilterUpdate = useMemo(
+    () =>
+      debounce((value) => {
+        setFilter(value);
+      }, 300),
+    []
+  ); 
+
+  useEffect(() => {
+    debouncedFilterUpdate(rawFilter);
+    return () => debouncedFilterUpdate.cancel(); // cleanup
+  }, [rawFilter, debouncedFilterUpdate]);
+
+  const filteredSaved = useMemo(() => {
+    return savedQueries.filter((q) =>
+      q.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [savedQueries, filter]);
+
+  const filteredHistory = useMemo(() => {
+    return queryHistory.filter((q) =>
+      q.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [queryHistory, filter]);
 
   return (
     <Drawer
@@ -53,25 +77,25 @@ const Sidebar = () => {
         <Tab label="History" />
         <Tab label="Tables" />
       </Tabs>
+
       <Box p={1}>
         <TextField
           variant="outlined"
           size="small"
           fullWidth
           placeholder="Search..."
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          value={rawFilter}
+          onChange={(e) => setRawFilter(e.target.value)}
         />
       </Box>
-      {tabIndex === 2 && (
-        <Box>
-          <TablesSchema />
-        </Box>
-      )}
 
-      <List dense>
-        {tabIndex != 2 &&
-          (tabIndex === 0 ? filteredSaved : filteredHistory).map(
+      {tabIndex === 2 ? (
+        <Suspense fallback={<div>Loading schema...</div>}>
+          <TablesSchema />
+        </Suspense>
+      ) : (
+        <List dense>
+          {(tabIndex === 0 ? filteredSaved : filteredHistory).map(
             (item, idx) => (
               <ListItem
                 key={idx}
@@ -88,7 +112,8 @@ const Sidebar = () => {
               </ListItem>
             )
           )}
-      </List>
+        </List>
+      )}
     </Drawer>
   );
 };

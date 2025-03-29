@@ -11,9 +11,9 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-// Example tables schema component
+// Example demo tables schema component 
 const TablesSchema = () => {
-  const [openTables, setOpenTables] = useState([]); // Track multiple expanded tables
+  const [openTables, setOpenTables] = useState([]); // Tracking multiple expanded tables
   const tableData = [
     {
       tableName: "customers",
@@ -47,7 +47,7 @@ const TablesSchema = () => {
     setOpenTables(
       (prev) =>
         prev.includes(tableName)
-          ? prev.filter((name) => name !== tableName) // Close the table if already open
+          ? prev.filter((name) => name !== tableName) // Closing the table if already open
           : [...prev, tableName] // Open the table if it's closed
     );
   };

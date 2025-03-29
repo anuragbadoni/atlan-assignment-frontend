@@ -20,6 +20,7 @@
     "@uiw/react-codemirror": "^4.23.10",
     "codemirror": "^6.0.1",
     "file-saver": "^2.0.5",
+    "lodash": "^4.17.21",
     "papaparse": "^5.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

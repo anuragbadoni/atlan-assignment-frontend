@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import { Box, Button, Stack } from "@mui/material";
 import CodeMirror from "@uiw/react-codemirror";
 import { sql } from "@codemirror/lang-sql";
@@ -10,20 +10,27 @@ const QueryEditor = ({ tab }) => {
   const { updateTabQuery, updateTabResult, addToHistory, setQueryLoading } =
     useEditorStore();
   const setExecutionTime = useEditorStore((state) => state.setExecutionTime);
-  const handleRunQuery = async () => {
+
+  // 🔁 useCallback to prevent re-creating function on each render
+  const handleRunQuery = useCallback(async () => {
     setQueryLoading(true);
     let result = [];
     try {
       const startTime = performance.now();
       let tableName;
-      if (tab.query.toLowerCase().includes("from customers")) {
+      const lowerQuery = tab.query.toLowerCase();
+
+      if (lowerQuery.includes("from customers")) {
         tableName = "customers.csv";
-      } else if (tab.query.toLowerCase().includes("from orders")) {
+      } else if (lowerQuery.includes("from orders")) {
         tableName = "orders_details.csv";
-      } else tableName = "products.csv";
+      } else {
+        tableName = "products.csv";
+      }
+
       const response = await fetch(tableName);
       const csvText = await response.text();
-      console.log(response);
+
       Papa.parse(csvText, {
         header: true,
         complete: (results) => {
@@ -45,25 +52,35 @@ const QueryEditor = ({ tab }) => {
       setQueryLoading(false);
       setExecutionTime(0);
     }
-  };
+  }, [
+    tab.query,
+    tab.id,
+    setQueryLoading,
+    updateTabResult,
+    addToHistory,
+    setExecutionTime,
+  ]);
 
-  // Handle keyboard shortcuts for Ctrl + Enter or Cmd + Enter
-  useEffect(() => {
-    const handleKeyDown = (event) => {
+  // 🔁 Memoizing extensions array
+  const codeMirrorExtensions = useMemo(() => [sql()], []);
+
+
+  const handleKeyDown = useCallback(
+    (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
         event.preventDefault();
-        handleRunQuery(); // Run the query if Ctrl + Enter is pressed
+        handleRunQuery();
       }
-    };
+    },
+    [handleRunQuery]
+  );
 
-    // Add event listener on mount
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
-
-    // Clean up event listener on unmount
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [tab.query]); // Depend on the query to re-attach listener when query changes
+  }, [handleKeyDown]);
 
   return (
     <Box mb={2}>
@@ -71,7 +88,7 @@ const QueryEditor = ({ tab }) => {
         value={tab.query}
         height="200px"
         theme={githubLight}
-        extensions={[sql()]}
+        extensions={codeMirrorExtensions}
         onChange={(value) => updateTabQuery(tab.id, value)}
       />
       <Stack direction="row" spacing={2} mt={1}>

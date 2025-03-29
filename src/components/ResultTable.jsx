@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   Box,
@@ -12,87 +12,93 @@ import { saveAs } from "file-saver";
 import {
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
-} from "@mui/icons-material"; // Import Material UI icons
-import useEditorStore from "../store/editorStore"; // Assuming your store
+} from "@mui/icons-material";
+import useEditorStore from "../store/editorStore";
 
-// Function to convert the result data into CSV format
 const convertToCSV = (rows) => {
-  const header = Object.keys(rows[0]).join(","); // Get column headers
-  const body = rows
-    .map(
-      (row) => Object.values(row).join(",") // Convert each row to a comma-separated string
-    )
-    .join("\n");
+  const header = Object.keys(rows[0]).join(",");
+  const body = rows.map((row) => Object.values(row).join(",")).join("\n");
   return `${header}\n${body}`;
 };
 
-// Function to handle CSV download
 const downloadCSV = (rows) => {
   const csv = convertToCSV(rows);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  saveAs(blob, "query-results.csv"); // Using file-saver to save the file
+  saveAs(blob, "query-results.csv");
 };
 
 const ResultTable = ({ tab }) => {
-  const rows = tab.result || [];
+  const rows = useMemo(() => tab.result || [], [tab.result]);
 
-  const [pageSize, setPageSize] = useState(10); // Set initial page size
-  const [currentPage, setCurrentPage] = useState(1); // Track current page
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { executionTime } = useEditorStore();
   const [time, setTime] = useState(executionTime);
 
   useEffect(() => {
-    setTime(executionTime); // Sync execution time with the global store
+    setTime(executionTime);
   }, [executionTime]);
 
-  const totalPages = Math.ceil(rows.length / pageSize); // Calculate total pages
-  const startRow = (currentPage - 1) * pageSize;
-  const endRow = startRow + pageSize;
-  const displayedRows = rows.slice(startRow, endRow); // Slice rows for pagination
+  const totalPages = useMemo(
+    () => Math.ceil(rows.length / pageSize),
+    [rows.length, pageSize]
+  );
+
+  const startRow = useMemo(
+    () => (currentPage - 1) * pageSize,
+    [currentPage, pageSize]
+  );
+  const endRow = useMemo(() => startRow + pageSize, [startRow, pageSize]);
+
+  const displayedRows = useMemo(() => {
+    return rows.slice(startRow, endRow);
+  }, [rows, startRow, endRow]);
+
+  const columns = useMemo(() => {
+    if (!rows.length) return [];
+    return [
+      {
+        field: "rowNumber",
+        headerName: "Row No.",
+        width: 100,
+        renderCell: (params) => {
+          const rowNumber = (currentPage - 1) * pageSize + params.row.id + 1;
+          return <span>{rowNumber}</span>;
+        },
+      },
+      ...Object.keys(rows[0]).map((key) => ({
+        field: key,
+        headerName: key.toUpperCase(),
+        width: 150,
+        sortable: true,
+      })),
+    ];
+  }, [rows, currentPage, pageSize]);
 
   const handleResultsPerPageChange = (event) => {
-    setPageSize(Number(event.target.value)); // Change page size
-    setCurrentPage(1); // Reset to first page when the page size changes
+    setPageSize(Number(event.target.value));
+    setCurrentPage(1);
   };
 
   const handlePageChange = (event) => {
-    setCurrentPage(Number(event.target.value)); // Change current page
+    setCurrentPage(Number(event.target.value));
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1); // Next page
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1); // Previous page
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   if (!rows.length) {
     return <div>No data to display. Run a query!</div>;
   }
 
-  const columns = [
-    {
-      field: "rowNumber",
-      headerName: "Row No.",
-      width: 100,
-      renderCell: (params) => {
-        const rowNumber = (currentPage - 1) * pageSize + params.row.id + 1;
-        return <span>{rowNumber}</span>;
-      },
-    },
-    ...Object.keys(rows[0]).map((key) => ({
-      field: key,
-      headerName: key.toUpperCase(),
-      width: 150,
-      sortable: true,
-    })),
-  ];
-
   return (
     <Box sx={{ width: "100%", mt: 2 }}>
-      {/* Query Summary with Controls at the Top */}
       <Box
         sx={{
           display: "flex",
@@ -112,31 +118,23 @@ const ResultTable = ({ tab }) => {
           <Typography variant="body1" sx={{ marginRight: 2 }}>
             Execution Time: {(time / 1000).toFixed(2)} s
           </Typography>
-
           <Typography variant="body1" sx={{ marginRight: 2 }}>
             Results per page:
           </Typography>
           <Select
             value={pageSize}
             onChange={handleResultsPerPageChange}
-            sx={{
-              marginRight: 2,
-              backgroundColor: "inherit",
-              cursor: "pointer",
-            }}
+            sx={{ marginRight: 2 }}
           >
             <MenuItem value={5}>5</MenuItem>
             <MenuItem value={10}>10</MenuItem>
             <MenuItem value={20}>20</MenuItem>
             <MenuItem value={50}>50</MenuItem>
           </Select>
-
           <IconButton
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            sx={{
-              marginRight: 1,
-            }}
+            sx={{ marginRight: 1 }}
           >
             <ArrowBackIcon />
           </IconButton>
@@ -176,18 +174,17 @@ const ResultTable = ({ tab }) => {
         </Button>
       </Box>
 
-      {/* DataGrid */}
       <Box sx={{ height: 500, width: "100%", overflowY: "auto" }}>
         <DataGrid
           rows={displayedRows.map((r, i) => ({ ...r, id: i }))}
           columns={columns}
           pageSize={pageSize}
-          rowsPerPageOptions={[5, 10, 20, 50]} // Allow user to select from multiple page sizes
+          rowsPerPageOptions={[5, 10, 20, 50]}
           pagination
-          paginationMode="client" // Client-side pagination
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Update page size dynamically
+          paginationMode="client"
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           disableSelectionOnClick
-          rowBuffer={10} // Number of rows to render before the visible ones
+          rowBuffer={10}
         />
       </Box>
     </Box>

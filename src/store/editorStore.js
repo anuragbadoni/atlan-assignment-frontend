@@ -21,6 +21,7 @@ const useEditorStore = create((set) => ({
   savedQueries: JSON.parse(localStorage.getItem("savedQueries")) || [
     { id: uuidv4(), name: "All Customers", query: "SELECT * FROM customers;" },
     { id: uuidv4(), name: "All Orders", query: "SELECT * FROM orders;" },
+    { id: uuidv4(), name: "All Products", query: "SELECT * FROM products;" },
   ],
 
   addSavedQuery: (query) =>
