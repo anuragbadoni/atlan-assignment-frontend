@@ -119,7 +119,7 @@ const TabManager = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex", alignItems: "center",cursor:"pointer" }}>
         <Tabs
           value={activeTabId}
           onChange={(e, newValue) => switchTab(newValue)}

@@ -1,8 +1,3 @@
-Certainly! Below is the updated **README.md** that includes placeholders for the two screenshots (one for the homepage and one for showing performance). You can replace the placeholder image URLs with the actual paths to your screenshots.
-
----
-
-```markdown
 # Atlan SQL Editor - Frontend Internship Task 2025
 
 This web-based **SQL Editor** is designed to help users write SQL queries, run them, and view the results in a virtualized table. The app also includes features like saving queries, searching through saved queries, pagination, and CSV export for the query results.
@@ -216,17 +211,5 @@ A **5-7 minute** video explaining the following:
 
 ## 🧑‍💻 Author
 
-Made with ❤️ for Atlan by **[Your Name]**  
-[GitHub](https://github.com/yourusername)
-```
-
----
-
-### 🚀 Next Steps:
-
-1. **Push the `README.md`** to your GitHub repository.
-2. **Deploy to Vercel** if not already done.
-3. **Test everything** once again on Vercel.
-4. **Record the demo video** and **link it** in the README (if you haven’t done that yet).
-
-This README contains everything you need, and with the placeholders for the screenshots (homepage and performance), you can now just replace them with the actual image links when available. Let me know if you need any more adjustments! 😊
+Made with ❤️ for Atlan by **Anurag Badoni**  
+[GitHub](https://github.com/anuragbadoni)

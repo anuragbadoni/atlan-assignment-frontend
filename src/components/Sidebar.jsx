@@ -17,7 +17,7 @@ const TablesSchema = lazy(() => import("./Tables")); // for Lazy load
 const Sidebar = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [rawFilter, setRawFilter] = useState(""); // for the actual input box
-  const [filter, setFilter] = useState("");      // debounced state
+  const [filter, setFilter] = useState(""); // debounced state
 
   const { savedQueries, queryHistory, openNewTab } = useEditorStore();
 
@@ -37,7 +37,7 @@ const Sidebar = () => {
         setFilter(value);
       }, 300),
     []
-  ); 
+  );
 
   useEffect(() => {
     debouncedFilterUpdate(rawFilter);
@@ -98,6 +98,7 @@ const Sidebar = () => {
           {(tabIndex === 0 ? filteredSaved : filteredHistory).map(
             (item, idx) => (
               <ListItem
+                style={{ cursor: "pointer" }}
                 key={idx}
                 onClick={() =>
                   handleQueryClick(
