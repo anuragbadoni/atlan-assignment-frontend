@@ -78,16 +78,18 @@ const Sidebar = () => {
         <Tab label="Tables" />
       </Tabs>
 
-      <Box p={1}>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          placeholder="Search..."
-          value={rawFilter}
-          onChange={(e) => setRawFilter(e.target.value)}
-        />
-      </Box>
+      {tabIndex == 0 && (
+        <Box p={1}>
+          <TextField
+            variant="outlined"
+            size="small"
+            fullWidth
+            placeholder="Search..."
+            value={rawFilter}
+            onChange={(e) => setRawFilter(e.target.value)}
+          />
+        </Box>
+      )}
 
       {tabIndex === 2 ? (
         <Suspense fallback={<div>Loading schema...</div>}>
