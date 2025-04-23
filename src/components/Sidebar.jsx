@@ -78,7 +78,7 @@ const Sidebar = () => {
         <Tab label="Tables" />
       </Tabs>
 
-      {tabIndex == 0 && (
+      {tabIndex <=1 && (
         <Box p={1}>
           <TextField
             variant="outlined"
